@@ -1,4 +1,4 @@
-package com.example.musicplayer.navigator
+package com.example.musicplayer.navigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

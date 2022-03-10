@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.musicplayer.components.NameAndArtist
 import com.example.musicplayer.ui.theme.white
 
 @Composable
@@ -72,28 +73,6 @@ fun Player() {
                 color = Color.Green,
             )
         }
-    }
-}
-
-@Composable
-fun NameAndArtist(name: String, artist: String)
-{
-    Column(
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp)
-    ) {
-        Text(
-            text = name,
-            style = MaterialTheme.typography.h6,
-            fontSize = 16.sp
-        )
-        Text(
-            text = artist,
-            style = MaterialTheme.typography.caption,
-            fontSize = 12.sp,
-            textAlign = TextAlign.Left,
-        )
     }
 }
 

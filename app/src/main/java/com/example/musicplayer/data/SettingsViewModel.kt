@@ -1,8 +1,7 @@
 package com.example.musicplayer.data
 
 import androidx.lifecycle.ViewModel
-import javax.inject.Inject
 
-data class SettingsViewModel @Inject constructor (
+data class SettingsViewModel constructor (
     val string: String
 ) : ViewModel()

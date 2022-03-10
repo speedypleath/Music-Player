@@ -1,4 +1,4 @@
-package com.example.musicplayer.navigator
+package com.example.musicplayer.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
