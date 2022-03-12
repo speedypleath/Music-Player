@@ -1,4 +1,4 @@
-package com.example.musicplayer.player
+package com.example.musicplayer.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -15,18 +15,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.musicplayer.components.NameAndArtist
+import com.example.musicplayer.data.SongViewModel
 import com.example.musicplayer.ui.theme.white
+import kotlinx.coroutines.delay
 
 @Composable
-fun Player() {
+fun Player(songViewModel: SongViewModel) {
     var progress by remember { mutableStateOf(0.1f) }
-    val increaseProgress = {
-        progress += 0.1f
-    }
+    var name by remember { mutableStateOf("") }
+    var artist by remember { mutableStateOf("") }
+
     val animatedProgress by animateFloatAsState(
         targetValue = progress,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
@@ -55,12 +54,42 @@ fun Player() {
             modifier = Modifier.fillMaxSize(1f)
         ) {
             Row(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
                     .wrapContentHeight(Alignment.CenterVertically, true),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                NameAndArtist(name = "Name of the song", artist = "Name of the artist")
-                ActionIcons(increaseProgress)
+                NameAndArtist(name = name, artist = artist)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.fillMaxSize(1f)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.PlayArrow,
+                        "Play/Pause",
+                        modifier = Modifier
+                            .padding(end = 12.dp)
+                            .size(32.dp)
+                            .fillMaxSize(1f)
+                            .scale(1.2f)
+                            .clickable {
+                                songViewModel.play("spotify:album:5L8VJO457GXReKVVfRhzyM").also {
+
+                                }
+                                name = songViewModel.getName
+                                artist = songViewModel.getArtist
+                            }
+                    )
+                    Icon(
+                        imageVector = Icons.Default.ArrowForward,
+                        "Repeat",
+                        modifier = Modifier
+                            .padding(end = 14.dp)
+                            .size(32.dp)
+                            .fillMaxSize(1f)
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(IntrinsicSize.Max))
             LinearProgressIndicator(
@@ -77,7 +106,7 @@ fun Player() {
 }
 
 @Composable
-fun ActionIcons(increaseProgress: () -> Unit) {
+fun ActionIcons(songViewModel: SongViewModel) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End,
@@ -91,7 +120,7 @@ fun ActionIcons(increaseProgress: () -> Unit) {
                 .size(32.dp)
                 .fillMaxSize(1f)
                 .scale(1.2f)
-                .clickable { increaseProgress() }
+                .clickable { songViewModel.play("spotify:album:5L8VJO457GXReKVVfRhzyM") }
         )
         Icon(
             imageVector = Icons.Default.ArrowForward,

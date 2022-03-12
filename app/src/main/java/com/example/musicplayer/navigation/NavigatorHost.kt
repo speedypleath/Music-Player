@@ -20,7 +20,7 @@ fun NavigationHost(navController: NavHostController, modifier: Modifier = Modifi
 
         composable(AppScreen.Home.name) {
             HomeBody {
-                navController.navigate(AppScreen.Home.name)
+                navController.navigate(AppScreen.Library.name)
             }
         }
         composable(AppScreen.Library.name) {
