@@ -5,12 +5,13 @@ import androidx.compose.material.darkColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import okhttp3.internal.wait
 
 private val DarkColorPalette = darkColors(
     primary = blue500,
     primaryVariant = blue300,
     secondary = green300,
-    background = black,
+//    background = black,
 //    surface = Black,
 //    onPrimary = Black,
 //    onSecondary = Black,
@@ -35,6 +36,9 @@ fun MusicPlayerTheme(content: @Composable () -> Unit) {
     val colors = DarkColorPalette
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
+        color = Color.Transparent
+    )
+    systemUiController.setNavigationBarColor(
         color = Color.Transparent
     )
     MaterialTheme(

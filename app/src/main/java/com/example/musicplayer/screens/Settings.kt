@@ -1,6 +1,5 @@
 package com.example.musicplayer.screens
 
-import android.view.View
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -22,6 +21,6 @@ fun OpenFolder() {
 }
 
 @Composable
-fun SettingsBody(function: () -> Unit) {
+fun SettingsBody() {
     OpenFolder()
 }

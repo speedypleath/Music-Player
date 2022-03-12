@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
     <color name="blue900">#FF03002e</color>
-    <color name="blue500">#FF090088</color>
-    <color name="blue300">#FF1a00c4</color>
-    <color name="pink500">#FFCC00E9</color>
 </resources>

@@ -5,11 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.musicplayer.spotify.SpotifyService
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 data class SongState(
     val isPlaying: Boolean = false,
@@ -18,27 +15,17 @@ data class SongState(
     val isRepeat: Boolean = false,
 )
 
-data class Song(
-    val title: String,
-    val artist: String,
-    val album: String,
-    val duration: Long,
-    val uri: String,
-    val image: String,
-)
-
-@HiltViewModel
-class SongViewModel @Inject constructor () : ViewModel() {
-    private val _song = MutableLiveData(Song("", "", "", 0, "", ""))
+class SongViewModel : ViewModel() {
+    private lateinit var _song: MutableLiveData<SongModel>
     private val _songState = MutableStateFlow(SongState())
 
-    fun timeElapsed(): Float {
-        return _songState.value.currentPosition / _song.value?.duration!!.toFloat()
-    }
-
-    fun changeSong(song: Song) {
-        _song.value = song
-    }
+//    fun timeElapsed(): Float {
+//        return _songState.value.currentPosition / _song.value?.duration!!.toFloat()
+//    }
+//
+//    fun changeSong(song: Song) {
+//        _song.value = song
+//    }
 
     val getName: String
         get() = _song.value?.title!!
@@ -46,6 +33,10 @@ class SongViewModel @Inject constructor () : ViewModel() {
     val getArtist: String
         get() = _song.value?.artist!!
 
+    fun initSong() {
+        _song = MutableLiveData()
+        _song.value = SongModel("Title of song", "Artist of song")
+    }
 
     fun play(uri: String) {
         viewModelScope.launch {
@@ -59,13 +50,13 @@ class SongViewModel @Inject constructor () : ViewModel() {
                     Log.d("SongViewModel", "position: $it")
                 }
                 SpotifyService.subscribeToTrack { song ->
-                    _song.value = Song(
+                    _song.value = SongModel(
                         song.name,
                         song.artists[0].name,
                         song.album.name,
                         song.duration,
-                        song.uri,
-                        song.imageUri.toString()
+//                        song.uri,
+//                        song.imageUri.toString()
                     )
                     Log.d("SongViewModel", "song: ${_song.value.toString()}")
                 }
@@ -74,38 +65,38 @@ class SongViewModel @Inject constructor () : ViewModel() {
         }
     }
 
-    private fun pause() {
-        _songState.value = _songState.value.copy(isPlaying = false)
-    }
+//    private fun pause() {
+//        _songState.value = _songState.value.copy(isPlaying = false)
+//    }
+//
+//    private fun resume() {
+//        SpotifyService.resume()
+//        _songState.value = _songState.value.copy(isPlaying = true)
+//    }
 
-    private fun resume() {
-        SpotifyService.resume()
-        _songState.value = _songState.value.copy(isPlaying = true)
-    }
-
-    fun isPlaying(): Boolean {
-        return _songState.value.isPlaying
-    }
-
-    fun togglePlayPause() {
-        if (_songState.value.isPlaying) {
-            pause()
-        } else {
-            resume()
-        }
-    }
-
-    fun seekTo(position: Float) {
-        _songState.value = _songState.value.copy(currentPosition = (position * _song.value?.duration!!).toLong())
-    }
-
-    fun toggleShuffle() {
-        _songState.value = _songState.value.copy(isShuffle = !_songState.value.isShuffle)
-    }
-
-    fun toggleRepeat() {
-        _songState.value = _songState.value.copy(isRepeat = !_songState.value.isRepeat)
-    }
+//    fun isPlaying(): Boolean {
+//        return _songState.value.isPlaying
+//    }
+//
+//    fun togglePlayPause() {
+//        if (_songState.value.isPlaying) {
+//            pause()
+//        } else {
+//            resume()
+//        }
+//    }
+//
+//    fun seekTo(position: Float) {
+//        _songState.value = _songState.value.copy(currentPosition = (position * _song.value?.duration!!).toLong())
+//    }
+//
+//    fun toggleShuffle() {
+//        _songState.value = _songState.value.copy(isShuffle = !_songState.value.isShuffle)
+//    }
+//
+//    fun toggleRepeat() {
+//        _songState.value = _songState.value.copy(isRepeat = !_songState.value.isRepeat)
+//    }
 
 }
 

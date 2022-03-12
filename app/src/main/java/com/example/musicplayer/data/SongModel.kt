@@ -6,9 +6,9 @@ import android.net.Uri
 data class SongModel(
     val title: String,
     val artist: String,
-    val album: String?,
-    val duration: Long,
-    val year: Int?,
-    val uri: Uri?,
-    val image: Bitmap?,
+    val album: String? = null,
+    val duration: Long = 0,
+    val year: Int? = null,
+    val uri: Uri? = null,
+    val image: Bitmap? = null
 )

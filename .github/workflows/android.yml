@@ -28,3 +28,5 @@ jobs:
       run: ./gradlew connectedAndroidTest
     - name: Run Unit Tests
       run: ./gradlew test
+    - name: Run Lint Check
+      run: ./gradlew lint

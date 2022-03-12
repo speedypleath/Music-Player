@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.MusicPlayer" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="Theme.MusicPlayer" parent="android:Theme.Material">
         <item name="android:statusBarColor">@color/blue900</item>
+        <item name="android:background">#00000000</item>
+        <item name="android:elevation">0dp</item>
+
     </style>
 </resources>

@@ -3,18 +3,16 @@ package com.example.musicplayer.spotify
 import android.content.Context
 import android.util.Log
 import com.example.musicplayer.BuildConfig
-import com.example.musicplayer.data.Song
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.protocol.client.CallResult
 import com.spotify.protocol.types.Empty
 import com.spotify.protocol.types.Track
-import javax.security.auth.callback.Callback
 
-enum class PlayingState {
-    PAUSED, PLAYING, STOPPED
-}
+//enum class PlayingState {
+//    PAUSED, PLAYING, STOPPED
+//}
 
 
 object SpotifyService {
@@ -46,29 +44,29 @@ object SpotifyService {
         return spotifyAppRemote?.playerApi?.play(uri)
     }
 
-    fun resume() {
-        spotifyAppRemote?.playerApi?.resume()
-    }
+//    fun resume() {
+//        spotifyAppRemote?.playerApi?.resume()
+//    }
 
-    fun pause() {
-        spotifyAppRemote?.playerApi?.pause()
-    }
-
-    fun playingState(handler: (PlayingState) -> Unit) {
-        spotifyAppRemote?.playerApi?.playerState?.setResultCallback { result ->
-            when {
-                result.track.uri == null -> {
-                    handler(PlayingState.STOPPED)
-                }
-                result.isPaused -> {
-                    handler(PlayingState.PAUSED)
-                }
-                else -> {
-                    handler(PlayingState.PLAYING)
-                }
-            }
-        }
-    }
+//    fun pause() {
+//        spotifyAppRemote?.playerApi?.pause()
+//    }
+//
+//    fun playingState(handler: (PlayingState) -> Unit) {
+//        spotifyAppRemote?.playerApi?.playerState?.setResultCallback { result ->
+//            when {
+//                result.track.uri == null -> {
+//                    handler(PlayingState.STOPPED)
+//                }
+//                result.isPaused -> {
+//                    handler(PlayingState.PAUSED)
+//                }
+//                else -> {
+//                    handler(PlayingState.PLAYING)
+//                }
+//            }
+//        }
+//    }
 
     fun disconnect() {
         Log.d("SpotifyService", "Disconnected!")

@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
 }
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
@@ -57,7 +56,6 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.devtools.ksp:symbol-processing-api:1.6.10-1.0.2'
     // For media playback using ExoPlayer
     implementation "androidx.media3:media3-exoplayer:1.0.0-alpha02"
 
@@ -111,7 +109,10 @@ dependencies {
     // Common functionality used across multiple media libraries
     implementation "androidx.media3:media3-common:1.0.0-alpha02"
 
+    // Spotify
     implementation files('../libs/spotify-app-remote-release-0.7.2.aar')
+
+    // Dependency injection koin
     implementation "io.insert-koin:koin-gradle-plugin:3.2.0-beta-1"
     implementation "io.insert-koin:koin-annotations:1.0.0-beta-1"
     implementation "io.insert-koin:koin-ksp-compiler:1.0.0-beta-1"
@@ -119,29 +120,26 @@ dependencies {
     implementation "io.insert-koin:koin-androidx-compose:3.2.0-beta-1"
     implementation "io.insert-koin:koin-android:3.2.0-beta-1"
     implementation "io.insert-koin:koin-androidx-workmanager:3.2.0-beta-1"
+    implementation "androidx.window:window:1.0.0"
     testImplementation "io.insert-koin:koin-test:3.1.5"
-    implementation "com.google.dagger:hilt-android:2.41"
-    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
-    kapt "com.google.dagger:hilt-compiler:2.41"
 
-    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation "com.google.code.gson:gson:2.9.0"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.20.3"
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.material:material:1.2.0-alpha05"
+    implementation "androidx.compose.material3:material3:1.0.0-alpha07"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
     implementation "androidx.navigation:navigation-compose:2.4.1"
     implementation 'androidx.activity:activity-compose:1.4.0'
-    implementation "com.google.accompanist:accompanist-systemuicontroller:0.20.3"
-    implementation "com.google.android.material:material:1.6.0-alpha03"
 
-    implementation 'androidx.leanback:leanback:1.0.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    implementation "androidx.core:core-ktx:1.7.0"
 }
 
 tasks.whenTaskAdded { task ->

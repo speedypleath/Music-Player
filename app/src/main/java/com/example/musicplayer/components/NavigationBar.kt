@@ -22,18 +22,18 @@ fun NavigationBar(
     BottomNavigation(
         modifier = Modifier
             .fillMaxWidth()
-            .absolutePadding(left = 16.dp, right = 16.dp, bottom = 16.dp)
+            .absolutePadding(left = 16.dp, right = 16.dp)
             .clip(RoundedCornerShape(0.dp, 0.dp, 10.dp, 10.dp))
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
                         Color.Black,
-                        Color.Gray
+                        Color.DarkGray
                     ),
+                    startY = 90f
                 ),
-                alpha = 0.4f
-            )
-            .padding(end = 32.dp, start = 32.dp),
+                alpha = 0.9f
+            ),
         contentColor = white,
         backgroundColor = Color.Transparent,
         elevation = 0.dp,

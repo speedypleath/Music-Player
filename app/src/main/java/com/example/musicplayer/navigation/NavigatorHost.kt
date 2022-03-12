@@ -19,19 +19,13 @@ fun NavigationHost(navController: NavHostController, modifier: Modifier = Modifi
     ) {
 
         composable(AppScreen.Home.name) {
-            HomeBody {
-                navController.navigate(AppScreen.Library.name)
-            }
+            HomeBody()
         }
         composable(AppScreen.Library.name) {
-            LibraryBody{
-                navController.navigate(AppScreen.Library.name)
-            }
+            LibraryBody()
         }
         composable(AppScreen.Settings.name) {
-            SettingsBody{
-                navController.navigate(AppScreen.Settings.name)
-            }
+            SettingsBody()
         }
 //        composable(AppScreen.Library.name) {
 //            LibraryBody(playlist = UserData.playlist) { playlist ->

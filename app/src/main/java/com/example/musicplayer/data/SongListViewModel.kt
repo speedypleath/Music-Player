@@ -4,13 +4,12 @@ package com.example.musicplayer.data
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
-import androidx.annotation.RequiresApi
+import android.util.Size
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,18 +25,14 @@ class SongListViewModel : ViewModel() {
     private var initialized = false
     private val backgroundScope = viewModelScope.plus(Dispatchers.Default)
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     fun initializeListIfNeeded(context: Context) {
         if (initialized) return
 
-        val treeUri = Uri.parse(
-            context.getSharedPreferences("settings", 0)
-                .getString("path", null)
-        )
-        val contract = DocumentsContract.buildChildDocumentsUriUsingTree(treeUri, DocumentsContract.getTreeDocumentId(treeUri))
-        val volumeNames: Set<String> = MediaStore.getExternalVolumeNames(context)
-        val collection = MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
-
+        val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
+        } else {
+            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        }
 
         val projection = arrayOf(
             MediaStore.Audio.Media.TITLE,
@@ -45,9 +40,12 @@ class SongListViewModel : ViewModel() {
             MediaStore.Audio.Media.ALBUM,
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.YEAR,
+            MediaStore.Audio.Media.IS_MUSIC,
+            MediaStore.Audio.Media._ID,
         )
+
         val selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0"
-//        val sortOrder = "${MediaStore.Audio.Media.DISPLAY_NAME} ASC"
+
         val query = collection?.let {
             context.contentResolver.query(
                 it,
@@ -64,30 +62,32 @@ class SongListViewModel : ViewModel() {
             val albumColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)
             val durationColumn = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)
             val yearColumn = cursor.getColumnIndex(MediaStore.Audio.Media.YEAR)
-
-
-
+            val isMusic = cursor.getColumnIndex(MediaStore.Audio.Media.IS_MUSIC)
+            val id = cursor.getColumnIndex(MediaStore.Audio.Media._ID)
 
             while (cursor.moveToNext()) {
+                if(cursor.getInt(isMusic) == 0) continue
                 val title = cursor.getString(titleColumn)
                 val artist = cursor.getString(artistColumn)
                 val album = cursor.getString(albumColumn)
                 val duration = cursor.getLong(durationColumn)
                 val year = cursor.getInt(yearColumn)
-//                val artist = cursor.getString(artistColumn)
+                val uri = Uri.withAppendedPath(collection, cursor.getString(id))
                 Log.d("SongListViewModel", "Found song: $title")
 
-                musicCards.add(
-                    SongModel(
-                        title = title,
-                        artist = artist,
-                        duration = duration,
-                        album = album,
-                        year = year,
-                        uri = null,
-                        image = null
+                if(artist != "<unknown>") {
+                    musicCards.add(
+                        SongModel(
+                            title = title,
+                            artist = artist,
+                            duration = duration,
+                            album = album,
+                            year = year,
+                            uri = uri,
+                            image = null
+                        )
                     )
-                )
+                }
             }
         }
         initialized = true
@@ -103,13 +103,20 @@ class SongListViewModel : ViewModel() {
     }
 
     private fun getAlbumArt(context: Context, uri: Uri): Bitmap {
-        val mmr = MediaMetadataRetriever()
-        mmr.setDataSource(context, uri)
-        val data = mmr.embeddedPicture
-        return if(data != null){
-            BitmapFactory.decodeByteArray(data, 0, data.size)
-        } else{
-            BitmapFactory.decodeResource(context.resources, R.drawable.note)
-        }
+        val thumbnail: Bitmap =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                try {
+                    context.contentResolver.loadThumbnail(uri, Size(128, 128), null)
+                } catch (e: Exception) {
+                    BitmapFactory.decodeResource(context.resources, R.drawable.back)
+                }
+            } else {
+                BitmapFactory.decodeResource(context.resources, R.drawable.back)
+            }
+        return thumbnail
+    }
+
+    fun isBitmapLoaded(index: Int): Boolean {
+        return musicCards[index].image != null
     }
 }

@@ -18,14 +18,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.musicplayer.data.SongViewModel
 import com.example.musicplayer.ui.theme.white
-import kotlinx.coroutines.delay
 
 @Composable
 fun Player(songViewModel: SongViewModel) {
-    var progress by remember { mutableStateOf(0.1f) }
+    val progress by remember { mutableStateOf(0.1f) }
     var name by remember { mutableStateOf("") }
     var artist by remember { mutableStateOf("") }
 
+    songViewModel.initSong()
     val animatedProgress by animateFloatAsState(
         targetValue = progress,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
@@ -39,11 +39,11 @@ fun Player(songViewModel: SongViewModel) {
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        Color.Gray,
+                        Color.DarkGray.copy(alpha = 0.8f),
                         Color.Black,
                     ),
+                    endY = 60f,
                 ),
-                alpha = 0.2f
             ),
         backgroundColor = Color.Transparent,
         contentColor = white,
@@ -74,9 +74,7 @@ fun Player(songViewModel: SongViewModel) {
                             .fillMaxSize(1f)
                             .scale(1.2f)
                             .clickable {
-                                songViewModel.play("spotify:album:5L8VJO457GXReKVVfRhzyM").also {
-
-                                }
+                                songViewModel.play("spotify:album:5L8VJO457GXReKVVfRhzyM")
                                 name = songViewModel.getName
                                 artist = songViewModel.getArtist
                             }
@@ -102,33 +100,5 @@ fun Player(songViewModel: SongViewModel) {
                 color = Color.Green,
             )
         }
-    }
-}
-
-@Composable
-fun ActionIcons(songViewModel: SongViewModel) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.End,
-        modifier = Modifier.fillMaxSize(1f)
-    ) {
-        Icon(
-            imageVector = Icons.Default.PlayArrow,
-            "Play/Pause",
-            modifier = Modifier
-                .padding(end = 12.dp)
-                .size(32.dp)
-                .fillMaxSize(1f)
-                .scale(1.2f)
-                .clickable { songViewModel.play("spotify:album:5L8VJO457GXReKVVfRhzyM") }
-        )
-        Icon(
-            imageVector = Icons.Default.ArrowForward,
-            "Repeat",
-            modifier = Modifier
-                .padding(end = 14.dp)
-                .size(32.dp)
-                .fillMaxSize(1f)
-        )
     }
 }
