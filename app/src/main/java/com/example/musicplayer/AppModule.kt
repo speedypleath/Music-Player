@@ -10,3 +10,8 @@ val appModule = module {
     single { parameters -> SettingsViewModel(action = parameters.get()) }
     viewModel { SongViewModel() }
 }
+
+val testModule = module {
+    single {SettingsViewModel(action = {}) }
+    viewModel { SongViewModel() }
+}

@@ -20,7 +20,7 @@ import com.example.musicplayer.data.SongViewModel
 import com.example.musicplayer.ui.theme.white
 
 @Composable
-fun Player(songViewModel: SongViewModel) {
+fun Player(songViewModel: SongViewModel = remember { SongViewModel() }) {
     val progress by remember { mutableStateOf(0.1f) }
     var name by remember { mutableStateOf("") }
     var artist by remember { mutableStateOf("") }

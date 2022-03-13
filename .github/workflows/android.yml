@@ -24,8 +24,6 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Run Instrumented unit tests
-      run: ./gradlew connectedAndroidTest
     - name: Run Unit Tests
       run: ./gradlew test
     - name: Run Lint Check
